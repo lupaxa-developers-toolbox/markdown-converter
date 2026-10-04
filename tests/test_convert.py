@@ -121,12 +121,14 @@ def test_unknown_flavour_and_non_string() -> None:
 
 def test_strike_and_bare_url_fall_back() -> None:
     source = "~~old~~ and https://example.com\n"
-    common = MarkdownConverter(source, flavour="github").to_commonmark()
-    assert "<del>old</del>" in common
-    assert "<https://example.com>" in common
-    obsidian = MarkdownConverter(source, flavour="github").to_obsidian()
-    assert "~~old~~" in obsidian
-    assert "https://example.com" in obsidian
+    assert (
+        MarkdownConverter(source, flavour="github").to_commonmark()
+        == "<del>old</del> and <https://example.com>\n"
+    )
+    assert (
+        MarkdownConverter(source, flavour="github").to_obsidian()
+        == "~~old~~ and https://example.com\n"
+    )
 
 
 def test_highlight_and_callout_fall_back() -> None:
